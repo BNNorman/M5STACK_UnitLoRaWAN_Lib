@@ -24,7 +24,7 @@ The example also shows how to access downlinks sent to the module.
 
 The TTN_Test.py example shows how to set various parameters prior to a join.
 
-NOTE: The library turns off device logging which the device outputs to the serial port. It can be quite verbose. I turn it off to simplify parsing the messages I want to see from the mdoule.
+NOTE: The library turns off device logging which the device outputs to the serial port. It can be quite verbose. I turn it off to simplify parsing the messages I want to see from the module.
 
 # Joining
 
