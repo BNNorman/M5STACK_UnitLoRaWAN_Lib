@@ -1,0 +1,56 @@
+[serial]
+    port="com5"		# testing was done on windows, change this for linux
+    baud=115200
+    bytesize=8
+    timeout=2
+    stopbits=1
+
+[network]
+    joinMode=0        # 0=OTAA, 1=ABP
+    deviceClass=0     # 0=A,1=B,2=C
+    txPower=2         # 0=17dbm, 1=15Dbm, 2=13dbm,3=11dbm,4=9dbm,5=7dbm, 6=5dbm
+    nbTrials=8
+
+[network.otaa]
+	# change these keys
+    devEui="0000000000000000"
+    appEui="0000000000000000"
+    appKey="00000000000000000000000000000000"	
+
+    autoJoin=1	# the device will rejoin if reset/power cycled
+    retries=8	# max number of attempts to join
+    interval=10 # normal reply is within 5s after sending JOIN_REQUEST
+				# interval controls the frequency of retries (if needed)
+
+
+# you only need this section if using ABP
+# not recommended since OTAA ensures you can see the gateway
+[network.abp]
+    devAddr="devAddr"
+    nwkSKey="nwkSKey"
+    appSkey="appSKey"
+
+
+[network.freqplan]
+    uldlmode=1     			# uplink/downlink frequency mode
+							#1: same frequency mode, 2: different freq mode
+							# in EU they are the same and RX2frequency is fixed (see below)
+
+    enableADR=1     		# should be enabled for stationary devices to allow
+							# server to optimise the link
+
+    joinDataRate=3          # initial datarate for join. ADR may change this
+							# if having trouble joining at this DR try DR0
+							# ADR will result in the server optimising the DR via MAC commands
+							
+    RX1Delay=5              # number of seconds to wait before listening for downlink after uplink
+							# RX2delay is 1s after this
+							
+    RX1DRoffset=0           # EU same as uplink
+    RX2DataRate=3           # EU plan
+    RX2Frequency=869525000  # EU plan
+
+    bandwidths=[7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0, 500.0] # kHz
+
+	# DR0 to DR6 (sf,bw) where bw is 0-9 (see bandwidths above)
+	data_rates=[[12,7],[11,7],[10,7],[9,7],[8,7],[7,7],[7,8]]   # EU plan
