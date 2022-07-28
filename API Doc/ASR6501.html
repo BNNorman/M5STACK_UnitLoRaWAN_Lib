@@ -1,0 +1,1955 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module ASR6501</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>ASR6501</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cbrian.000%5Cdocuments%5Cgithub%5Casr6501%5Casr6501.py">c:\users\brian.000\documents\github\asr6501\asr6501.py</a></font></td></tr></table>
+    <p><tt>ASR6501.py<br>
+&nbsp;<br>
+Author:&nbsp;Brian&nbsp;Norman<br>
+Date:&nbsp;28/7/2022<br>
+&nbsp;<br>
+Python&nbsp;library&nbsp;API&nbsp;for&nbsp;an&nbsp;M5STACK&nbsp;LoRaWAN&nbsp;module,&nbsp;using&nbsp;an&nbsp;ASR6501,&nbsp;to&nbsp;talk&nbsp;to&nbsp;TTN.<br>
+&nbsp;<br>
+The&nbsp;module&nbsp;is&nbsp;driven&nbsp;using&nbsp;serial&nbsp;AT&nbsp;commands.<br>
+&nbsp;<br>
+If&nbsp;inquiry&nbsp;commands&nbsp;result&nbsp;in&nbsp;an&nbsp;error&nbsp;an&nbsp;<a href="builtins.html#Exception">Exception</a>&nbsp;is&nbsp;raised.&nbsp;The&nbsp;lastATCmd,lastErrorType&nbsp;and&nbsp;lastErrorNum<br>
+are&nbsp;stored&nbsp;for&nbsp;caller&nbsp;access&nbsp;and&nbsp;can&nbsp;be&nbsp;retrieved&nbsp;in&nbsp;a&nbsp;dict&nbsp;using&nbsp;getLastATError()<br>
+&nbsp;<br>
+Based&nbsp;on&nbsp;the&nbsp;document&nbsp;'ASR650X&nbsp;AT&nbsp;Command&nbsp;Summary.pdf'&nbsp;found&nbsp;here:-<br>
+&nbsp;<br>
+<a href="https://github.com/r3cn3p5/lorawan/blob/main/ASR650X%20AT%20Command%20Introduction-20190605.pdf">https://github.com/r3cn3p5/lorawan/blob/main/ASR650X%20AT%20Command%20Introduction-20190605.pdf</a></tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#Exception">builtins.Exception</a>(<a href="builtins.html#BaseException">builtins.BaseException</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="ASR6501.html#ASRCMEError">ASRCMEError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRERRSend">ASRERRSend</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRERRSent">ASRERRSent</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRErrorUnexpected">ASRErrorUnexpected</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRInvalidAppEui">ASRInvalidAppEui</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRInvalidAppKey">ASRInvalidAppKey</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRInvalidAppSKey">ASRInvalidAppSKey</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRInvalidBootMode">ASRInvalidBootMode</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRInvalidDevAddr">ASRInvalidDevAddr</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRInvalidDevEui">ASRInvalidDevEui</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRInvalidNwkSKey">ASRInvalidNwkSKey</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRNoPayload">ASRNoPayload</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRPatternMatchFailed">ASRPatternMatchFailed</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRReceiveTimeout">ASRReceiveTimeout</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRSerialError">ASRSerialError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRTomlConfigKeyError">ASRTomlConfigKeyError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRUnknownClassCombination">ASRUnknownClassCombination</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRUnsupported">ASRUnsupported</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#ASRUnsupportedManuf">ASRUnsupportedManuf</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="ASR6501.html#STATUS">STATUS</a>
+</font></dt><dt><font face="helvetica, arial"><a href="ASR6501.html#asr6501">asr6501</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRCMEError">class <strong>ASRCMEError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;the&nbsp;last&nbsp;AT&nbsp;command&nbsp;failed<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRCMEError">ASRCMEError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRCMEError-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRCMEError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRCMEError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRCMEError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRCMEError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRCMEError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRCMEError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRCMEError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRCMEError-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRCMEError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRCMEError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRERRSend">class <strong>ASRERRSend</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;DTRX&nbsp;error&nbsp;sending&nbsp;the&nbsp;last&nbsp;uplink<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRERRSend">ASRERRSend</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRERRSend-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRERRSend-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRERRSend-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSend-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSend-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSend-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSend-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSend-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRERRSend-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSend-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRERRSend-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRERRSent">class <strong>ASRERRSent</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;DTRX&nbsp;TX_CNT&nbsp;error&nbsp;sending&nbsp;the&nbsp;last&nbsp;uplink<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRERRSent">ASRERRSent</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRERRSent-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRERRSent-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRERRSent-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSent-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSent-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSent-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSent-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSent-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRERRSent-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRERRSent-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRERRSent-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRErrorUnexpected">class <strong>ASRErrorUnexpected</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;an&nbsp;unexpected&nbsp;error&nbsp;occurred<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRErrorUnexpected">ASRErrorUnexpected</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRErrorUnexpected-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRErrorUnexpected-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRErrorUnexpected-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRErrorUnexpected-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRErrorUnexpected-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRErrorUnexpected-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRErrorUnexpected-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRErrorUnexpected-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRErrorUnexpected-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRErrorUnexpected-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRErrorUnexpected-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRInvalidAppEui">class <strong>ASRInvalidAppEui</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>AppEui&nbsp;should&nbsp;be&nbsp;a&nbsp;8&nbsp;char&nbsp;hex&nbsp;string<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRInvalidAppEui">ASRInvalidAppEui</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidAppEui-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidAppEui-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRInvalidAppEui-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppEui-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppEui-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppEui-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppEui-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppEui-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRInvalidAppEui-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppEui-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRInvalidAppEui-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRInvalidAppKey">class <strong>ASRInvalidAppKey</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>AppKey&nbsp;should&nbsp;be&nbsp;a&nbsp;16&nbsp;char&nbsp;hex&nbsp;string<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRInvalidAppKey">ASRInvalidAppKey</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidAppKey-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidAppKey-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRInvalidAppKey-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppKey-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppKey-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppKey-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppKey-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppKey-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRInvalidAppKey-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppKey-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRInvalidAppKey-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRInvalidAppSKey">class <strong>ASRInvalidAppSKey</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>appSKey&nbsp;should&nbsp;be&nbsp;a&nbsp;16&nbsp;char&nbsp;hex&nbsp;string<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRInvalidAppSKey">ASRInvalidAppSKey</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidAppSKey-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidAppSKey-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRInvalidAppSKey-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppSKey-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppSKey-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppSKey-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppSKey-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppSKey-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRInvalidAppSKey-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidAppSKey-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRInvalidAppSKey-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRInvalidBootMode">class <strong>ASRInvalidBootMode</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>An&nbsp;invalid&nbsp;reboot&nbsp;mode&nbsp;was&nbsp;given&nbsp;Should&nbsp;be&nbsp;0,1&nbsp;or&nbsp;7<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRInvalidBootMode">ASRInvalidBootMode</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidBootMode-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidBootMode-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRInvalidBootMode-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidBootMode-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidBootMode-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidBootMode-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidBootMode-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidBootMode-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRInvalidBootMode-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidBootMode-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRInvalidBootMode-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRInvalidDevAddr">class <strong>ASRInvalidDevAddr</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Devaddr&nbsp;should&nbsp;be&nbsp;a&nbsp;4&nbsp;char&nbsp;hex&nbsp;string<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRInvalidDevAddr">ASRInvalidDevAddr</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidDevAddr-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidDevAddr-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRInvalidDevAddr-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevAddr-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevAddr-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevAddr-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevAddr-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevAddr-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRInvalidDevAddr-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevAddr-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRInvalidDevAddr-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRInvalidDevEui">class <strong>ASRInvalidDevEui</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>DevEui&nbsp;should&nbsp;be&nbsp;a&nbsp;8&nbsp;char&nbsp;hex&nbsp;string<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRInvalidDevEui">ASRInvalidDevEui</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidDevEui-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidDevEui-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRInvalidDevEui-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevEui-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevEui-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevEui-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevEui-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevEui-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRInvalidDevEui-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidDevEui-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRInvalidDevEui-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRInvalidNwkSKey">class <strong>ASRInvalidNwkSKey</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>nwkSKey&nbsp;should&nbsp;be&nbsp;a&nbsp;16&nbsp;char&nbsp;hex&nbsp;string<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRInvalidNwkSKey">ASRInvalidNwkSKey</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidNwkSKey-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRInvalidNwkSKey-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRInvalidNwkSKey-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidNwkSKey-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidNwkSKey-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidNwkSKey-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidNwkSKey-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidNwkSKey-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRInvalidNwkSKey-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRInvalidNwkSKey-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRInvalidNwkSKey-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRNoPayload">class <strong>ASRNoPayload</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;DTRX&nbsp;no&nbsp;payload&nbsp;specified<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRNoPayload">ASRNoPayload</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRNoPayload-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRNoPayload-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRNoPayload-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRNoPayload-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRNoPayload-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRNoPayload-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRNoPayload-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRNoPayload-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRNoPayload-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRNoPayload-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRNoPayload-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRPatternMatchFailed">class <strong>ASRPatternMatchFailed</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;unable&nbsp;to&nbsp;extract&nbsp;value&nbsp;(pattern&nbsp;match&nbsp;failed)<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRPatternMatchFailed">ASRPatternMatchFailed</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRPatternMatchFailed-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRPatternMatchFailed-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRPatternMatchFailed-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRPatternMatchFailed-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRPatternMatchFailed-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRPatternMatchFailed-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRPatternMatchFailed-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRPatternMatchFailed-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRPatternMatchFailed-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRPatternMatchFailed-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRPatternMatchFailed-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRReceiveTimeout">class <strong>ASRReceiveTimeout</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;AT&nbsp;command&nbsp;response&nbsp;timeout<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRReceiveTimeout">ASRReceiveTimeout</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRReceiveTimeout-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRReceiveTimeout-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRReceiveTimeout-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRReceiveTimeout-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRReceiveTimeout-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRReceiveTimeout-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRReceiveTimeout-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRReceiveTimeout-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRReceiveTimeout-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRReceiveTimeout-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRReceiveTimeout-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRSerialError">class <strong>ASRSerialError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Unable&nbsp;to&nbsp;get&nbsp;manuf&nbsp;id.&nbsp;Check&nbsp;serial&nbsp;connection.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRSerialError">ASRSerialError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRSerialError-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRSerialError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRSerialError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRSerialError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRSerialError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRSerialError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRSerialError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRSerialError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRSerialError-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRSerialError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRSerialError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRTomlConfigKeyError">class <strong>ASRTomlConfigKeyError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;error&nbsp;accessing&nbsp;TOML&nbsp;config&nbsp;file&nbsp;entry<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRTomlConfigKeyError">ASRTomlConfigKeyError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRTomlConfigKeyError-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRTomlConfigKeyError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRTomlConfigKeyError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRTomlConfigKeyError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRTomlConfigKeyError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRTomlConfigKeyError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRTomlConfigKeyError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRTomlConfigKeyError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRTomlConfigKeyError-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRTomlConfigKeyError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRTomlConfigKeyError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRUnknownClassCombination">class <strong>ASRUnknownClassCombination</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>setClass()&nbsp;Unknown&nbsp;class/branch&nbsp;combination<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRUnknownClassCombination">ASRUnknownClassCombination</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRUnknownClassCombination-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRUnknownClassCombination-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRUnknownClassCombination-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnknownClassCombination-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnknownClassCombination-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRUnknownClassCombination-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnknownClassCombination-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnknownClassCombination-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRUnknownClassCombination-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnknownClassCombination-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRUnknownClassCombination-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRUnsupported">class <strong>ASRUnsupported</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>ASR&nbsp;the&nbsp;chosen&nbsp;method&nbsp;is&nbsp;not&nbsp;supported&nbsp;in&nbsp;this&nbsp;library<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRUnsupported">ASRUnsupported</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRUnsupported-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRUnsupported-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRUnsupported-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupported-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupported-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupported-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupported-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupported-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRUnsupported-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupported-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRUnsupported-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ASRUnsupportedManuf">class <strong>ASRUnsupportedManuf</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Expected&nbsp;'ASR'&nbsp;as&nbsp;manufacturer&nbsp;ID<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="ASR6501.html#ASRUnsupportedManuf">ASRUnsupportedManuf</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRUnsupportedManuf-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ASRUnsupportedManuf-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ASRUnsupportedManuf-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupportedManuf-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupportedManuf-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupportedManuf-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupportedManuf-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupportedManuf-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ASRUnsupportedManuf-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ASRUnsupportedManuf-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ASRUnsupportedManuf-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="STATUS">class <strong>STATUS</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>LoRaWAN&nbsp;module&nbsp;status&nbsp;values.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>DOWNLOAD_AVAILABLE</strong> = 8</dl>
+
+<dl><dt><strong>JOIN_FAILED</strong> = 5</dl>
+
+<dl><dt><strong>JOIN_OK</strong> = 4</dl>
+
+<dl><dt><strong>LINKCHECK</strong> = 6</dl>
+
+<dl><dt><strong>NOOP</strong> = 0</dl>
+
+<dl><dt><strong>NO_DOWNLOAD</strong> = 7</dl>
+
+<dl><dt><strong>SENDING</strong> = 1</dl>
+
+<dl><dt><strong>SEND_FAILED</strong> = 2</dl>
+
+<dl><dt><strong>SEND_OK</strong> = 3</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="asr6501">class <strong>asr6501</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#asr6501">asr6501</a>(serial,&nbsp;logging_level:&nbsp;int&nbsp;=&nbsp;10)<br>
+&nbsp;<br>
+The&nbsp;ASR6501&nbsp;API&nbsp;class<br>
+&nbsp;<br>
+Create&nbsp;a&nbsp;serial&nbsp;<a href="builtins.html#object">object</a>&nbsp;and&nbsp;a&nbsp;logger&nbsp;in&nbsp;your&nbsp;main&nbsp;code&nbsp;before&nbsp;instantiating&nbsp;the&nbsp;class<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="asr6501-__init__"><strong>__init__</strong></a>(self, serial, logging_level: int = 10)</dt><dd><tt>initialises&nbsp;the&nbsp;ASR6501&nbsp;class<br>
+&nbsp;<br>
+:param&nbsp;serial:&nbsp;serial&nbsp;stream&nbsp;<a href="builtins.html#object">object</a><br>
+:param&nbsp;logging_level:&nbsp;such&nbsp;as&nbsp;logging.INFO,&nbsp;logging.DEBUG&nbsp;etc<br>
+:param&nbsp;debug:</tt></dd></dl>
+
+<dl><dt><a name="asr6501-addMulticastAddr"><strong>addMulticastAddr</strong></a>(self, addr: str) -&gt; bool</dt><dd><tt>Add&nbsp;a&nbsp;multicast&nbsp;address&nbsp;(32&nbsp;hex&nbsp;characters&nbsp;expected)<br>
+&nbsp;<br>
+:param&nbsp;addr:&nbsp;str:&nbsp;32&nbsp;hex&nbsp;characters<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-calcAirTime"><strong>calcAirTime</strong></a>(self, PL: int = 0, SF: int = 9, BW: int = 125, NP: int = 8, HE: int = 0, DE: int = 0, CR: int = 1)</dt><dd><tt>The&nbsp;LoRaWAN&nbsp;module&nbsp;AT&nbsp;commands&nbsp;do&nbsp;not&nbsp;provide&nbsp;airtime&nbsp;feedback&nbsp;(AFAIK)&nbsp;therefore&nbsp;this<br>
+method&nbsp;is&nbsp;provided&nbsp;to&nbsp;assist&nbsp;the&nbsp;user&nbsp;to&nbsp;stay&nbsp;within&nbsp;the&nbsp;legal&nbsp;duty&nbsp;cycle&nbsp;limits<br>
+and&nbsp;TTN&nbsp;fair&nbsp;access&nbsp;policy<br>
+&nbsp;<br>
+This&nbsp;method,&nbsp;by&nbsp;default,calculates&nbsp;the&nbsp;airtime&nbsp;of&nbsp;a&nbsp;packet&nbsp;at&nbsp;DR3&nbsp;-&nbsp;you&nbsp;only&nbsp;need&nbsp;to<br>
+provide&nbsp;the&nbsp;&nbsp;message&nbsp;length&nbsp;if&nbsp;that&nbsp;is&nbsp;true.<br>
+&nbsp;<br>
+To&nbsp;use&nbsp;it&nbsp;for&nbsp;other&nbsp;regions&nbsp;and&nbsp;data&nbsp;rates&nbsp;pass&nbsp;in&nbsp;the&nbsp;SF&nbsp;and&nbsp;BW&nbsp;eg<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Tair=getAirTime(myMsgLen,8,500)&nbsp;-&nbsp;AU915&nbsp;DR6<br>
+&nbsp;<br>
+The&nbsp;output&nbsp;matches&nbsp;that&nbsp;of&nbsp;online&nbsp;airtime&nbsp;calculators<br>
+&nbsp;<br>
+see:-<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://avbentem.github.io/airtime-calculator/ttn/au915">https://avbentem.github.io/airtime-calculator/ttn/au915</a><br>
+&nbsp;<br>
+:param&nbsp;PL:&nbsp;&nbsp;&nbsp;payload&nbsp;length<br>
+:param&nbsp;SF:&nbsp;&nbsp;&nbsp;Spreading&nbsp;factor&nbsp;&nbsp;&nbsp;7-12<br>
+:param&nbsp;BW:&nbsp;&nbsp;&nbsp;bandwidth&nbsp;(125,250,500)<br>
+:param&nbsp;NP:&nbsp;&nbsp;&nbsp;number&nbsp;of&nbsp;preamble&nbsp;symbols<br>
+:param&nbsp;HE:&nbsp;&nbsp;&nbsp;header&nbsp;0=enabled/explicit,&nbsp;1=disabled/implicit<br>
+:param&nbsp;DE:&nbsp;&nbsp;&nbsp;Low&nbsp;data&nbsp;Rate&nbsp;1=enabled,&nbsp;0=disabled<br>
+:param&nbsp;CR:&nbsp;&nbsp;&nbsp;Coding&nbsp;rate&nbsp;1..4&nbsp;default&nbsp;is&nbsp;1<br>
+:return:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float:&nbsp;air&nbsp;time&nbsp;in&nbsp;ms</tt></dd></dl>
+
+<dl><dt><a name="asr6501-checkForDownlink"><strong>checkForDownlink</strong></a>(self)</dt><dd><tt>check&nbsp;if&nbsp;a&nbsp;downlink&nbsp;has&nbsp;been&nbsp;received.<br>
+&nbsp;<br>
+Primarily&nbsp;for&nbsp;class&nbsp;B&nbsp;&amp;&nbsp;C&nbsp;operation&nbsp;since&nbsp;,&nbsp;with&nbsp;class&nbsp;A<br>
+downlinks&nbsp;occur&nbsp;after&nbsp;an&nbsp;uplink&nbsp;in&nbsp;the&nbsp;RX1/RX2&nbsp;windows.<br>
+&nbsp;<br>
+If&nbsp;a&nbsp;message&nbsp;has&nbsp;been&nbsp;received&nbsp;invokes&nbsp;the&nbsp;downlinkCallback<br>
+method&nbsp;if&nbsp;set&nbsp;up&nbsp;before&nbsp;hand&nbsp;otherwise&nbsp;does&nbsp;nothing<br>
+with&nbsp;the&nbsp;downlink.<br>
+&nbsp;<br>
+Should&nbsp;be&nbsp;called&nbsp;repeatedly&nbsp;from&nbsp;a&nbsp;loop&nbsp;in&nbsp;the&nbsp;control<br>
+program<br>
+&nbsp;<br>
+&nbsp;<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-delMulticastAddr"><strong>delMulticastAddr</strong></a>(self, addr: str) -&gt; bool</dt><dd><tt>delete&nbsp;a&nbsp;multicast&nbsp;address&nbsp;from&nbsp;the&nbsp;list.<br>
+&nbsp;<br>
+:param&nbsp;addr:&nbsp;str:&nbsp;Hex&nbsp;address&nbsp;32&nbsp;characters<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-disableADR"><strong>disableADR</strong></a>(self) -&gt; bool</dt><dd><tt>disable&nbsp;Adaptive&nbsp;Data&nbsp;Rate&nbsp;adjustment.<br>
+&nbsp;<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-enableADR"><strong>enableADR</strong></a>(self, enable: int = 1) -&gt; bool</dt><dd><tt>enable&nbsp;or&nbsp;disable&nbsp;Adaptive&nbsp;Data&nbsp;Rate&nbsp;adjustment.<br>
+&nbsp;<br>
+:param&nbsp;enable:&nbsp;1&nbsp;to&nbsp;enable,&nbsp;0&nbsp;to&nbsp;disable<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-enableLinkCheck"><strong>enableLinkCheck</strong></a>(self, mode: int = 0) -&gt; bool</dt><dd><tt>The&nbsp;command&nbsp;must&nbsp;be&nbsp;used&nbsp;before&nbsp;an&nbsp;uplink&nbsp;transmission<br>
+&nbsp;<br>
+:param&nbsp;mode:&nbsp;int&nbsp;0=disable,1=link&nbsp;check&nbsp;once&nbsp;only,&nbsp;2=after&nbsp;every&nbsp;uplink<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-enableLowPower"><strong>enableLowPower</strong></a>(self, enable: int = 1) -&gt; bool</dt><dd><tt>Puts&nbsp;the&nbsp;ASR6501&nbsp;into&nbsp;low&nbsp;power&nbsp;mode.<br>
+&nbsp;<br>
+:param&nbsp;enable:&nbsp;int&nbsp;1=enable,<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getADR"><strong>getADR</strong></a>(self) -&gt; int</dt><dd><tt>Return&nbsp;adaptive&nbsp;data&nbsp;rate&nbsp;setting<br>
+&nbsp;<br>
+1=enabled,&nbsp;0=disabled<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;&lt;setting&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getAppEui"><strong>getAppEui</strong></a>(self) -&gt; str</dt><dd><tt>The&nbsp;device&nbsp;already&nbsp;comes&nbsp;with&nbsp;an&nbsp;appEui&nbsp;programmed.&nbsp;It&nbsp;needs&nbsp;changing.<br>
+&nbsp;<br>
+:return:&nbsp;str:&lt;appeui&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getAppKey"><strong>getAppKey</strong></a>(self) -&gt; str</dt><dd><tt>The&nbsp;device&nbsp;comes&nbsp;programmed&nbsp;with&nbsp;an&nbsp;appkey&nbsp;-&nbsp;it&nbsp;will&nbsp;need&nbsp;changing&nbsp;for&nbsp;your&nbsp;app.<br>
+&nbsp;<br>
+:return:&nbsp;str:&nbsp;&lt;appkey&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getAppSKey"><strong>getAppSKey</strong></a>(self) -&gt; str</dt><dd><tt>return&nbsp;the&nbsp;current&nbsp;AppSKey<br>
+&nbsp;<br>
+:return:&nbsp;str:&nbsp;&lt;APPSKEY&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getApplicationPort"><strong>getApplicationPort</strong></a>(self) -&gt; int</dt><dd><tt>Returns&nbsp;the&nbsp;current&nbsp;port&nbsp;number&nbsp;in&nbsp;range&nbsp;1..223&nbsp;other&nbsp;values<br>
+are&nbsp;reserved.<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;application&nbsp;port&nbsp;(fPort)</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getBatteryLevel"><strong>getBatteryLevel</strong></a>(self) -&gt; int</dt><dd><tt>get&nbsp;the&nbsp;current&nbsp;battery&nbsp;level&nbsp;0..100.<br>
+&nbsp;<br>
+&nbsp;:return:&nbsp;int:&nbsp;0..100</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getBaud"><strong>getBaud</strong></a>(self) -&gt; int</dt><dd><tt>returns&nbsp;the&nbsp;UART&nbsp;current&nbsp;serial&nbsp;baud&nbsp;rate&nbsp;setting,&nbsp;normally&nbsp;115200<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;&lt;baud&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getClass"><strong>getClass</strong></a>(self) -&gt; int</dt><dd><tt>Returns&nbsp;the&nbsp;current&nbsp;class&nbsp;(0..2)&nbsp;of&nbsp;the&nbsp;device<br>
+&nbsp;<br>
+0&nbsp;-&nbsp;class&nbsp;A&nbsp;-&nbsp;&nbsp;&nbsp;listens&nbsp;during&nbsp;RX1&nbsp;and&nbsp;RX2<br>
+1&nbsp;-&nbsp;class&nbsp;B&nbsp;-&nbsp;&nbsp;&nbsp;preconfigured&nbsp;listening&nbsp;slots<br>
+2&nbsp;-&nbsp;class&nbsp;C&nbsp;-&nbsp;&nbsp;&nbsp;always&nbsp;listening<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;class&nbsp;number</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getDataRate"><strong>getDataRate</strong></a>(self) -&gt; int</dt><dd><tt>returns&nbsp;the&nbsp;current&nbsp;datarate&nbsp;0..5<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;data&nbsp;rate</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getDevAddr"><strong>getDevAddr</strong></a>(self) -&gt; str</dt><dd><tt>return&nbsp;the&nbsp;current&nbsp;DevAddr<br>
+&nbsp;<br>
+:return:&nbsp;str:&nbsp;&lt;devaddr&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getDevEui"><strong>getDevEui</strong></a>(self) -&gt; str</dt><dd><tt>The&nbsp;device&nbsp;comes&nbsp;with&nbsp;a&nbsp;deveui&nbsp;already&nbsp;programmed.&nbsp;This&nbsp;will&nbsp;need<br>
+changing&nbsp;for&nbsp;your&nbsp;app.<br>
+&nbsp;<br>
+Expected&nbsp;AT&nbsp;response<br>
+&nbsp;<br>
+['AT+CDEVEUI?',&nbsp;'+CDEVEUI:00BB9DA5B97ADDF6',&nbsp;'OK',&nbsp;'ASR6501:~#']<br>
+&nbsp;<br>
+:return:&nbsp;str:&nbsp;&lt;deveui&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getFreqBandMask"><strong>getFreqBandMask</strong></a>(self) -&gt; int</dt><dd><tt>get&nbsp;the&nbsp;Current&nbsp;frequency&nbsp;band&nbsp;mask<br>
+&nbsp;<br>
+ch0-7&nbsp;mask&nbsp;is&nbsp;1<br>
+ch8-15&nbsp;mask&nbsp;is&nbsp;2<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;frequency&nbsp;band&nbsp;mask</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getJoinInfo"><strong>getJoinInfo</strong></a>(self) -&gt; dict</dt><dd><tt>get&nbsp;the&nbsp;current&nbsp;join&nbsp;parameters&nbsp;as&nbsp;a&nbsp;dict<br>
+&nbsp;<br>
+Keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Values<br>
+start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0=stop&nbsp;join,&nbsp;1-&nbsp;start&nbsp;join<br>
+autojoin&nbsp;&nbsp;&nbsp;&nbsp;0=disable&nbsp;auto&nbsp;join,&nbsp;1=enable&nbsp;auto-join<br>
+interval&nbsp;&nbsp;&nbsp;&nbsp;retry&nbsp;interval&nbsp;-&nbsp;seconds<br>
+retires&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max&nbsp;retries<br>
+&nbsp;<br>
+:return:&nbsp;dict:&nbsp;containing&nbsp;named&nbsp;parameters</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getJoinMode"><strong>getJoinMode</strong></a>(self) -&gt; int</dt><dd><tt>Return&nbsp;the&nbsp;current&nbsp;join&nbsp;mode<br>
+&nbsp;<br>
+:return:&nbsp;int:&lt;joinmode&gt;&nbsp;0=OTAA,&nbsp;1=ABP</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getKeysProtect"><strong>getKeysProtect</strong></a>(self) -&gt; int</dt><dd><tt>Return&nbsp;current&nbsp;state&nbsp;of&nbsp;key&nbsp;protection.<br>
+&nbsp;<br>
+I&nbsp;assume,&nbsp;in&nbsp;the&nbsp;lack&nbsp;of&nbsp;manuf&nbsp;detail,&nbsp;that&nbsp;protected&nbsp;keys<br>
+cannot&nbsp;be&nbsp;changed&nbsp;(accidentally)<br>
+&nbsp;<br>
+0&nbsp;=&nbsp;not&nbsp;protected<br>
+1&nbsp;=&nbsp;protected<br>
+&nbsp;<br>
+:return:&nbsp;int:&lt;keysprotect&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getLastATError"><strong>getLastATError</strong></a>(self) -&gt; dict</dt><dd><tt>last&nbsp;error&nbsp;info&nbsp;is&nbsp;updated&nbsp;per&nbsp;transaction.<br>
+&nbsp;<br>
+provided&nbsp;for&nbsp;exception&nbsp;handling<br>
+&nbsp;<br>
+last&nbsp;error&nbsp;is&nbsp;a&nbsp;string&nbsp;like<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"+CME&nbsp;ERROR:&lt;num&gt;"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"+ERR&nbsp;SEND:&lt;num&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"+ERR&nbsp;SENT:&lt;num&gt;<br>
+&nbsp;<br>
+These&nbsp;values&nbsp;are&nbsp;rcleared&nbsp;to&nbsp;None&nbsp;at&nbsp;the&nbsp;start&nbsp;of&nbsp;a&nbsp;command.&nbsp;If&nbsp;there&nbsp;was&nbsp;no&nbsp;error<br>
+then&nbsp;Type&nbsp;and&nbsp;Num&nbsp;will&nbsp;be&nbsp;None<br>
+&nbsp;<br>
+Error&nbsp;Type&nbsp;is&nbsp;the&nbsp;string&nbsp;preceeding&nbsp;the&nbsp;colon&nbsp;(:)&nbsp;and&nbsp;the&nbsp;error&nbsp;number&nbsp;is&nbsp;the&nbsp;part&nbsp;after<br>
+the&nbsp;colon.<br>
+&nbsp;<br>
+:return:&nbsp;dict:&nbsp;&nbsp;{&nbsp;"AtCmd":lastATCmd,"Type":lastErrorType,"Num":lastErrorNum}&nbsp;or&nbsp;None&nbsp;if&nbsp;no&nbsp;error.</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getLinkCheck"><strong>getLinkCheck</strong></a>(self) -&gt; dict</dt><dd><tt>This&nbsp;command&nbsp;throws&nbsp;an&nbsp;error&nbsp;-&nbsp;presumably&nbsp;until&nbsp;setLinkCheck&nbsp;has&nbsp;been&nbsp;called<br>
+and&nbsp;needs&nbsp;to&nbsp;be&nbsp;sent&nbsp;before&nbsp;sending&nbsp;data.<br>
+&nbsp;<br>
+After&nbsp;a&nbsp;time&nbsp;(presumably,&nbsp;asynchronously,&nbsp;after&nbsp;an&nbsp;uplink)&nbsp;it&nbsp;will&nbsp;return<br>
+&nbsp;&nbsp;&nbsp;&nbsp;+CLINKCHECK:Y0，Y1，Y2，Y3，Y4<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Y0&nbsp;0=success,&nbsp;non-zero&nbsp;failed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Y1&nbsp;represent&nbsp;the&nbsp;DemodMargin<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Y2&nbsp;represent&nbsp;the&nbsp;NbGateways<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Y3&nbsp;represent&nbsp;the&nbsp;RSSI&nbsp;of&nbsp;the&nbsp;command’s&nbsp;download<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Y4&nbsp;represent&nbsp;the&nbsp;SNR&nbsp;of&nbsp;the&nbsp;command’s&nbsp;download<br>
+&nbsp;<br>
+:return:&nbsp;dict:&nbsp;{"status":int(Y0),"demod&nbsp;margin":&nbsp;int(Y1),&nbsp;"num&nbsp;gateways":&nbsp;int(Y2),&nbsp;"RSSI":&nbsp;int(Y3),&nbsp;"SNR":&nbsp;int(Y4)}</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getLogLevel"><strong>getLogLevel</strong></a>(self) -&gt; int</dt><dd><tt>Get&nbsp;current&nbsp;log&nbsp;level&nbsp;which&nbsp;ranges&nbsp;0..5&nbsp;where&nbsp;0&nbsp;means&nbsp;off&nbsp;and&nbsp;higher<br>
+values&nbsp;mean&nbsp;higher&nbsp;verbosity<br>
+&nbsp;<br>
+:return:&nbsp;int:&lt;LOGLVL&gt;&nbsp;0..5</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getManufId"><strong>getManufId</strong></a>(self) -&gt; str</dt><dd><tt>get&nbsp;the&nbsp;manufacturer&nbsp;ID&nbsp;which&nbsp;should&nbsp;always&nbsp;be&nbsp;ASR&nbsp;for&nbsp;this&nbsp;device<br>
+&nbsp;<br>
+:return:&nbsp;str:&lt;manufacturer&gt;&nbsp;e.g.&nbsp;'ASR'</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getMessageType"><strong>getMessageType</strong></a>(self) -&gt; int</dt><dd><tt>returns&nbsp;the&nbsp;default&nbsp;message&nbsp;type&nbsp;as&nbsp;1=CONFIRMED&nbsp;or&nbsp;0=UNCONFIRMED<br>
+&nbsp;<br>
+0&nbsp;for&nbsp;unconfirmed,&nbsp;1&nbsp;for&nbsp;confirmed<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;0&nbsp;for&nbsp;unconfirmed,&nbsp;1&nbsp;for&nbsp;confirmed</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getModelRevision"><strong>getModelRevision</strong></a>(self) -&gt; str</dt><dd><tt>return&nbsp;the&nbsp;LoRaWAN&nbsp;module&nbsp;revision<br>
+&nbsp;<br>
+:return:&nbsp;str:&nbsp;v4.3&nbsp;softversion=V1.2.0&nbsp;or&nbsp;similar</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getNbTrials"><strong>getNbTrials</strong></a>(self) -&gt; dict</dt><dd><tt>returns&nbsp;the&nbsp;message&nbsp;type&nbsp;and&nbsp;current&nbsp;nbtrials&nbsp;setting,&nbsp;which&nbsp;controls&nbsp;join&nbsp;retries<br>
+&nbsp;<br>
+expected&nbsp;AT&nbsp;response<br>
+['AT+CNBTRIALS?',&nbsp;'+CNBTRIALS:1,8',&nbsp;'OK',&nbsp;'ASR6501:~#']<br>
+&nbsp;<br>
+First&nbsp;digit&nbsp;is&nbsp;confirmed/unconfirned&nbsp;message&nbsp;type<br>
+0:&nbsp;unconfirm&nbsp;package,&nbsp;1:&nbsp;confirm<br>
+Second&nbsp;value&nbsp;nbtrials=&nbsp;max&nbsp;send&nbsp;times,&nbsp;range&nbsp;1..15<br>
+&nbsp;<br>
+:return:&nbsp;dict:&nbsp;{"MType":&lt;type&gt;,&nbsp;"NbTrials":&lt;value&gt;}&nbsp;or&nbsp;None&nbsp;if&nbsp;error</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getNumberOfMulticastAddr"><strong>getNumberOfMulticastAddr</strong></a>(self) -&gt; int</dt><dd><tt>Gets&nbsp;a&nbsp;count&nbsp;of&nbsp;the&nbsp;number&nbsp;of&nbsp;multi-cast&nbsp;addresses&nbsp;known&nbsp;by&nbsp;the&nbsp;device<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;count</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getNwkSKey"><strong>getNwkSKey</strong></a>(self) -&gt; str</dt><dd><tt>return&nbsp;the&nbsp;current&nbsp;nwkSkey<br>
+&nbsp;<br>
+:return:&nbsp;str:&nbsp;&lt;nwkskey&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getPingSlotInfo"><strong>getPingSlotInfo</strong></a>(self) -&gt; int</dt><dd><tt>Only&nbsp;valid&nbsp;for&nbsp;Class&nbsp;B&nbsp;but&nbsp;returned&nbsp;regardless<br>
+&nbsp;<br>
+Ping&nbsp;slot&nbsp;info&nbsp;is&nbsp;the&nbsp;periodicity:&nbsp;See&nbsp;:-<br>
+<a href="https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lorawan-class-b-devices">https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lorawan-class-b-devices</a><br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;ping&nbsp;slot&nbsp;periodicity</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getRSSI"><strong>getRSSI</strong></a>(self, freqBandIdx: int = 1) -&gt; dict</dt><dd><tt>return&nbsp;a&nbsp;list&nbsp;of&nbsp;RSSI&nbsp;key-value&nbsp;pairs&nbsp;for&nbsp;each&nbsp;frequency&nbsp;band<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;0:&lt;Channel&nbsp;0&nbsp;rssi&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&lt;Channel&nbsp;1&nbsp;rssi&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;…<br>
+&nbsp;&nbsp;&nbsp;&nbsp;15:&lt;Channel&nbsp;8&nbsp;rssi&gt;<br>
+&nbsp;<br>
+:freqBandIdx:&nbsp;int:&nbsp;frequency&nbsp;band&nbsp;index<br>
+:return:&nbsp;dict</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getRX1Delay"><strong>getRX1Delay</strong></a>(self) -&gt; int</dt><dd><tt>get&nbsp;the&nbsp;current&nbsp;RX1Delay&nbsp;(seconds)<br>
+&nbsp;<br>
+:return:&nbsp;int:&lt;RX1&nbsp;delay&gt;</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getReceiveWindowParameters"><strong>getReceiveWindowParameters</strong></a>(self) -&gt; dict</dt><dd><tt>returns&nbsp;the&nbsp;current&nbsp;datarate&nbsp;settings&nbsp;for&nbsp;RX1&nbsp;and&nbsp;RX2&nbsp;plus&nbsp;RX2&nbsp;frequency<br>
+&nbsp;<br>
+:return:&nbsp;dict&nbsp;{"RX1Datarate":int(p[0]),"RX2Datarate":int(p[1]),"RX2Frequency":int(p[2])}</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getReportMode"><strong>getReportMode</strong></a>(self) -&gt; dict</dt><dd><tt>The&nbsp;command&nbsp;is&nbsp;mainly&nbsp;used&nbsp;for&nbsp;test&nbsp;purposes&nbsp;and&nbsp;should&nbsp;be&nbsp;issued&nbsp;before&nbsp;a&nbsp;send<br>
+&nbsp;<br>
+Expected&nbsp;AT&nbsp;response<br>
+&nbsp;&nbsp;&nbsp;&nbsp;+CRM:&lt;reportMode&gt;,[reportInterval]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OK<br>
+&nbsp;<br>
+:return:&nbsp;dict&nbsp;or&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getSerialNumber"><strong>getSerialNumber</strong></a>(self) -&gt; str</dt><dd><tt>get&nbsp;the&nbsp;device&nbsp;serial&nbsp;number<br>
+&nbsp;<br>
+:return:&nbsp;str:&nbsp;'0D39FFCD00031E43'&nbsp;or&nbsp;similar</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getStatus"><strong>getStatus</strong></a>(self) -&gt; int</dt><dd><tt>Returns&nbsp;current&nbsp;status&nbsp;of&nbsp;the&nbsp;device:-<br>
+&nbsp;<br>
+00&nbsp;–&nbsp;there&nbsp;is&nbsp;no&nbsp;data&nbsp;operation<br>
+01&nbsp;–&nbsp;there&nbsp;is&nbsp;data&nbsp;in&nbsp;sending<br>
+02&nbsp;–&nbsp;there&nbsp;is&nbsp;data&nbsp;sent&nbsp;but&nbsp;failed<br>
+03&nbsp;–&nbsp;there&nbsp;is&nbsp;data&nbsp;sent&nbsp;and&nbsp;success<br>
+04&nbsp;–&nbsp;JOIN&nbsp;success&nbsp;(only&nbsp;appear&nbsp;in&nbsp;first&nbsp;join&nbsp;procedure)<br>
+05&nbsp;–&nbsp;JOIN&nbsp;fail&nbsp;(only&nbsp;appear&nbsp;in&nbsp;first&nbsp;join&nbsp;procedure)<br>
+06&nbsp;–&nbsp;Network&nbsp;may&nbsp;abnormal（result&nbsp;from&nbsp;Link&nbsp;Check）<br>
+07&nbsp;–&nbsp;there&nbsp;is&nbsp;data&nbsp;sent&nbsp;and&nbsp;success&nbsp;but&nbsp;no&nbsp;download<br>
+08&nbsp;–&nbsp;there&nbsp;is&nbsp;data&nbsp;sent&nbsp;and&nbsp;success,&nbsp;there&nbsp;is&nbsp;download&nbsp;too.<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;status</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getTxPower"><strong>getTxPower</strong></a>(self) -&gt; int</dt><dd><tt>returns&nbsp;the&nbsp;index&nbsp;into&nbsp;the&nbsp;power&nbsp;table&nbsp;(see&nbsp;setTxPower)<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;current&nbsp;power&nbsp;setting</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getULDLmode"><strong>getULDLmode</strong></a>(self) -&gt; int</dt><dd><tt>get&nbsp;the&nbsp;current&nbsp;uplink/downlink&nbsp;mode<br>
+&nbsp;<br>
+:return:&nbsp;int</tt></dd></dl>
+
+<dl><dt><a name="asr6501-getWorkMode"><strong>getWorkMode</strong></a>(self) -&gt; int</dt><dd><tt>returned&nbsp;mode&nbsp;will&nbsp;be&nbsp;2&nbsp;(normal&nbsp;work&nbsp;mode)<br>
+&nbsp;<br>
+:return:&nbsp;int:&nbsp;mode</tt></dd></dl>
+
+<dl><dt><a name="asr6501-join"><strong>join</strong></a>(self, start: int = 1, autojoin: int = 0, interval: int = 8, retries: int = 8) -&gt; bool</dt><dd><tt>Start&nbsp;or&nbsp;stop&nbsp;the&nbsp;join&nbsp;process.<br>
+Set&nbsp;the&nbsp;OTAA&nbsp;keys&nbsp;and&nbsp;other&nbsp;parameters&nbsp;first.<br>
+&nbsp;<br>
+:param&nbsp;start:&nbsp;int:&nbsp;0:&nbsp;stop&nbsp;join,1:&nbsp;start&nbsp;join<br>
+:param&nbsp;autojoin:&nbsp;int:&nbsp;0:&nbsp;disable&nbsp;auto&nbsp;join,&nbsp;1:enable&nbsp;auto&nbsp;join&nbsp;(factory)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;enabled&nbsp;the&nbsp;device&nbsp;will&nbsp;re-join&nbsp;after&nbsp;a&nbsp;power&nbsp;cycle<br>
+:param&nbsp;interval:&nbsp;int:&nbsp;7..255&nbsp;(factory&nbsp;is&nbsp;8&nbsp;seconds)&nbsp;period&nbsp;between&nbsp;retries<br>
+:param&nbsp;retries:&nbsp;int:&nbsp;1..256&nbsp;max&nbsp;number&nbsp;of&nbsp;join&nbsp;retries&nbsp;-&nbsp;default&nbsp;is&nbsp;8<br>
+&nbsp;<br>
+responses&nbsp;from&nbsp;the&nbsp;module<br>
+OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command&nbsp;syntax&nbsp;ok,&nbsp;then&nbsp;one&nbsp;of<br>
++CJOIN:OK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Authentication&nbsp;Success<br>
+OK+SENT:nn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;presumably&nbsp;TTN&nbsp;keys<br>
+OK+RECV:aa,bb,cc&nbsp;&nbsp;&nbsp;&nbsp;downlink&nbsp;received&nbsp;in&nbsp;RX1/RX2&nbsp;window<br>
+&nbsp;<br>
++CJOIN:FAIL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Authentication&nbsp;Fail<br>
+&nbsp;<br>
+:return:&nbsp;True/False&nbsp;or&nbsp;raise&nbsp;<a href="#ASRCMEError">ASRCMEError</a></tt></dd></dl>
+
+<dl><dt><a name="asr6501-loraRxTest"><strong>loraRxTest</strong></a>(self, freq: int, datarate: int) -&gt; bool</dt><dd><tt>Continuous&nbsp;receive&nbsp;mode&nbsp;(testing&nbsp;only)<br>
+&nbsp;<br>
+:param&nbsp;freq:&nbsp;int:&nbsp;hz&nbsp;e.g.&nbsp;865000000<br>
+:param&nbsp;datarate:&nbsp;int:0..5<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-loraTxContinuousTest"><strong>loraTxContinuousTest</strong></a>(self, freq: int, power: int, paOpt: int = 0) -&gt; bool</dt><dd><tt>Continuous&nbsp;transmit&nbsp;test<br>
+&nbsp;<br>
+:param&nbsp;freq:&nbsp;int:&nbsp;150000000..960000000<br>
+:param&nbsp;power:&nbsp;int:&nbsp;range&nbsp;0..22<br>
+:param&nbsp;paOpt:&nbsp;int:&nbsp;default&nbsp;0&nbsp;range&nbsp;0..3&nbsp;Power&nbsp;amp&nbsp;optimal&nbsp;setting<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-loraTxTest"><strong>loraTxTest</strong></a>(self, freq: int, datarate: int, power: int) -&gt; bool</dt><dd><tt>transmit&nbsp;test,&nbsp;loops&nbsp;once&nbsp;per&nbsp;second&nbsp;(testing&nbsp;only)<br>
+&nbsp;<br>
+:param&nbsp;freq:&nbsp;int:&nbsp;150000000..960000000<br>
+:param&nbsp;datarate:&nbsp;int:&nbsp;range&nbsp;0..5<br>
+:param&nbsp;power:&nbsp;int:&nbsp;range&nbsp;0..22<br>
+:return:&nbsp;bool:&nbsp;True/false</tt></dd></dl>
+
+<dl><dt><a name="asr6501-lowPowerTest"><strong>lowPowerTest</strong></a>(self, which: str) -&gt; bool</dt><dd><tt>lowPowerTest<br>
+&nbsp;<br>
+:param&nbsp;which:&nbsp;str:&nbsp;"sleep","MCU"&nbsp;or&nbsp;"standby"<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-reboot"><strong>reboot</strong></a>(self, mode: int = 0)</dt><dd><tt>reboot&nbsp;the&nbsp;LoRaWAN&nbsp;unit<br>
+&nbsp;<br>
+supported&nbsp;modes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;immediate&nbsp;reboot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;wait&nbsp;till&nbsp;current&nbsp;transmission&nbsp;has&nbsp;finished<br>
+&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;reboot&nbsp;and&nbsp;enter&nbsp;boot&nbsp;loader<br>
+&nbsp;<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-receivePayload"><strong>receivePayload</strong></a>(self) -&gt; dict</dt><dd><tt>get&nbsp;downlink&nbsp;messages&nbsp;if&nbsp;any.<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;separate&nbsp;from&nbsp;the&nbsp;downlinkCallback&nbsp;which&nbsp;includes&nbsp;the&nbsp;message&nbsp;type,<br>
+port,msglen&nbsp;and&nbsp;msg&nbsp;information<br>
+&nbsp;<br>
+RX&nbsp;buffer&nbsp;is&nbsp;emptied.<br>
+&nbsp;<br>
+:return:&nbsp;dict:&nbsp;containing&nbsp;length&nbsp;and&nbsp;payload</tt></dd></dl>
+
+<dl><dt><a name="asr6501-restoreMacConfiguration"><strong>restoreMacConfiguration</strong></a>(self) -&gt; bool</dt><dd><tt>restore&nbsp;the&nbsp;last&nbsp;saved&nbsp;MAC&nbsp;settings.<br>
+&nbsp;<br>
+Normally&nbsp;restore&nbsp;at&nbsp;program&nbsp;start&nbsp;before&nbsp;sending<br>
+&nbsp;<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-saveMacConfiguration"><strong>saveMacConfiguration</strong></a>(self) -&gt; bool</dt><dd><tt>save&nbsp;current&nbsp;MAC&nbsp;settings&nbsp;to&nbsp;eeprom.<br>
+&nbsp;<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-sendPayload"><strong>sendPayload</strong></a>(self, payload: str = None, confirm: int = 0, nbtrials: int = 8) -&gt; bool</dt><dd><tt>possible&nbsp;responses<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OK+SEND:TX_LEN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;confirm&nbsp;length<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OK+SENT:TX_CNT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;nbtrials<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OK+RECV:TYPE,PORT,LEN,DATA&nbsp;&nbsp;#&nbsp;received&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;or<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ERR+SEND:ERR_NUM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;error&nbsp;sending<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ERR+SENT:TX_CNT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;nbtrials&nbsp;expired?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;or<br>
+&nbsp;&nbsp;&nbsp;&nbsp;+CME&nbsp;ERROR:&lt;err&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;command&nbsp;error<br>
+&nbsp;<br>
+Note&nbsp;OK+RECV&nbsp;information&nbsp;is&nbsp;passed&nbsp;to&nbsp;a&nbsp;downlink&nbsp;callback&nbsp;method<br>
+if&nbsp;it&nbsp;has&nbsp;been&nbsp;setup&nbsp;using&nbsp;<a href="#asr6501-setDownlinkCallback">setDownlinkCallback</a>(func)<br>
+&nbsp;<br>
+:param&nbsp;payload:&nbsp;str:&nbsp;msg&nbsp;to&nbsp;send<br>
+:param&nbsp;confirm:&nbsp;int:&nbsp;0/1&nbsp;1=confirmed&nbsp;message&nbsp;0=unconfirmed<br>
+:param&nbsp;nbtrials:&nbsp;int:&nbsp;default&nbsp;is&nbsp;8<br>
+&nbsp;<br>
+:return:&nbsp;True/false</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setAppEui"><strong>setAppEui</strong></a>(self, appeui: str) -&gt; bool</dt><dd><tt>sets&nbsp;the&nbsp;devEui&nbsp;key<br>
+&nbsp;<br>
+:param&nbsp;appeui:&nbsp;32&nbsp;char&nbsp;hex&nbsp;string<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setAppKey"><strong>setAppKey</strong></a>(self, appkey: str) -&gt; bool</dt><dd><tt>set&nbsp;the&nbsp;appKey&nbsp;for&nbsp;OTAA&nbsp;join<br>
+&nbsp;<br>
+:param&nbsp;appkey:&nbsp;32&nbsp;char&nbsp;hex&nbsp;string<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setAppSKey"><strong>setAppSKey</strong></a>(self, appskey: str) -&gt; bool</dt><dd><tt>set&nbsp;the&nbsp;AppSKey&nbsp;string.&nbsp;Only&nbsp;used&nbsp;for&nbsp;ABP<br>
+&nbsp;<br>
+:param&nbsp;appskey:&nbsp;str:&nbsp;32&nbsp;hex&nbsp;chars<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setApplicationPort"><strong>setApplicationPort</strong></a>(self, port: int = 10) -&gt; bool</dt><dd><tt>Set&nbsp;the&nbsp;port&nbsp;to&nbsp;sending&nbsp;messages.<br>
+&nbsp;<br>
+If&nbsp;using&nbsp;the&nbsp;port&nbsp;to&nbsp;group&nbsp;messages&nbsp;you&nbsp;need&nbsp;to&nbsp;call&nbsp;this<br>
+before&nbsp;sending&nbsp;a&nbsp;message.<br>
+&nbsp;<br>
+:param&nbsp;port:&nbsp;int:&nbsp;default&nbsp;10&nbsp;(factory)<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setBaud"><strong>setBaud</strong></a>(self, baud: int) -&gt; bool</dt><dd><tt>Return&nbsp;True&nbsp;if&nbsp;the&nbsp;AT&nbsp;command&nbsp;succeeds&nbsp;otherwise&nbsp;False<br>
+&nbsp;<br>
+:param&nbsp;baud:&nbsp;int&nbsp;e.g.&nbsp;115200&nbsp;(default)<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setClass"><strong>setClass</strong></a>(self, loraClass=0, branch=0, param1=None, param2=None, param3=None, param4=None) -&gt; bool</dt><dd><tt>set&nbsp;the&nbsp;device&nbsp;class&nbsp;0=A,1=B,2=C<br>
+&nbsp;<br>
+If&nbsp;class&nbsp;is&nbsp;1&nbsp;and&nbsp;branch&nbsp;is&nbsp;0,&nbsp;then&nbsp;only&nbsp;para1&nbsp;parameter&nbsp;is&nbsp;used&nbsp;to&nbsp;set&nbsp;the&nbsp;ping&nbsp;slot&nbsp;periodicity,<br>
+whose&nbsp;value&nbsp;range&nbsp;is&nbsp;0~7,&nbsp;the&nbsp;related&nbsp;period&nbsp;time&nbsp;is&nbsp;0.96*2^periodicity&nbsp;seconds；<br>
+&nbsp;<br>
+If&nbsp;class&nbsp;is&nbsp;1&nbsp;and&nbsp;branch&nbsp;is&nbsp;1,&nbsp;then&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;param1&nbsp;is&nbsp;used&nbsp;to&nbsp;set&nbsp;the&nbsp;frequency&nbsp;of&nbsp;beacon,&nbsp;its&nbsp;unit&nbsp;is&nbsp;Hz;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;param2&nbsp;is&nbsp;used&nbsp;to&nbsp;set&nbsp;the&nbsp;data&nbsp;rate&nbsp;of&nbsp;the&nbsp;beacon;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;param3&nbsp;is&nbsp;used&nbsp;to&nbsp;set&nbsp;the&nbsp;frequency&nbsp;of&nbsp;ping&nbsp;slot,&nbsp;its&nbsp;unit&nbsp;is&nbsp;Hz;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;param4&nbsp;is&nbsp;used&nbsp;to&nbsp;set&nbsp;the&nbsp;data&nbsp;rate&nbsp;of&nbsp;ping&nbsp;slot.<br>
+&nbsp;<br>
+Raises&nbsp;an&nbsp;exception&nbsp;if&nbsp;the&nbsp;class/branch&nbsp;combination&nbsp;is&nbsp;unknown<br>
+&nbsp;<br>
+:param&nbsp;loraClass:&nbsp;0-A,&nbsp;1=B,&nbsp;2=C<br>
+:param&nbsp;branch:&nbsp;0&nbsp;or&nbsp;1<br>
+:param&nbsp;para1:&nbsp;ping&nbsp;slot&nbsp;periodicity&nbsp;if&nbsp;class=1&nbsp;and&nbsp;branch=0&nbsp;else&nbsp;beacon&nbsp;frequency<br>
+:param&nbsp;para2:&nbsp;datarate&nbsp;if&nbsp;class=1&nbsp;and&nbsp;branch=1&nbsp;else&nbsp;not&nbsp;used<br>
+:param&nbsp;para3:&nbsp;ping&nbsp;slot&nbsp;frequency<br>
+:param&nbsp;para4:&nbsp;ping&nbsp;slot&nbsp;data&nbsp;rate<br>
+:return:&nbsp;True/false</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setDataRate"><strong>setDataRate</strong></a>(self, DR: int = 3) -&gt; bool</dt><dd><tt>The&nbsp;EU868&nbsp;factory&nbsp;default&nbsp;value&nbsp;is&nbsp;DR3,&nbsp;its&nbsp;value&nbsp;range&nbsp;is:<br>
+&nbsp;<br>
+0&nbsp;-&nbsp;SF12，BW125<br>
+1&nbsp;-&nbsp;SF11，BW125<br>
+2&nbsp;-&nbsp;SF10，BW125<br>
+3&nbsp;-&nbsp;SF9，BW125<br>
+4&nbsp;-&nbsp;SF8，BW125<br>
+5&nbsp;-&nbsp;SF7，BW125<br>
+&nbsp;<br>
+:param&nbsp;DR:&nbsp;int:&nbsp;0..5<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setDevAddr"><strong>setDevAddr</strong></a>(self, devaddr: str) -&gt; bool</dt><dd><tt>Set&nbsp;the&nbsp;DevAddr&nbsp;string<br>
+&nbsp;<br>
+:param&nbsp;devaddr:&nbsp;16&nbsp;char&nbsp;hex&nbsp;string<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setDevEui"><strong>setDevEui</strong></a>(self, deveui: str) -&gt; bool</dt><dd><tt>set&nbsp;the&nbsp;DevEui&nbsp;string<br>
+&nbsp;<br>
+:param&nbsp;deveui:&nbsp;str:&nbsp;8&nbsp;hex&nbsp;chars<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setDownlinkCallback"><strong>setDownlinkCallback</strong></a>(self, func=None) -&gt; bool</dt><dd><tt>Configure&nbsp;the&nbsp;callback&nbsp;function&nbsp;which&nbsp;will&nbsp;receive&nbsp;4&nbsp;parameters<br>
+Mtype,Port,msgLen,msg<br>
+&nbsp;<br>
+NOTE:&nbsp;when&nbsp;sending&nbsp;uplinks&nbsp;this&nbsp;code&nbsp;automatically&nbsp;checks&nbsp;for&nbsp;any&nbsp;downlinks<br>
+in&nbsp;the&nbsp;RX1/RX2&nbsp;windows.&nbsp;For&nbsp;class&nbsp;B/C&nbsp;operation&nbsp;your&nbsp;code&nbsp;needs&nbsp;to&nbsp;frequently&nbsp;call<br>
+<a href="#asr6501-checkForDownlink">checkForDownlink</a>()&nbsp;which&nbsp;will&nbsp;invoke&nbsp;the&nbsp;callback&nbsp;if&nbsp;a&nbsp;downlink&nbsp;has&nbsp;been&nbsp;received.<br>
+&nbsp;<br>
+:param&nbsp;func:&nbsp;the&nbsp;function&nbsp;to&nbsp;call&nbsp;when&nbsp;a&nbsp;downlink&nbsp;message&nbsp;is&nbsp;received<br>
+:return:&nbsp;True&nbsp;if&nbsp;set,&nbsp;False&nbsp;if&nbsp;not</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setFreqBandMask"><strong>setFreqBandMask</strong></a>(self, mask: int = 1) -&gt; bool</dt><dd><tt>sets&nbsp;the&nbsp;bit&nbsp;mask&nbsp;used&nbsp;to&nbsp;enable/disable&nbsp;channels<br>
+&nbsp;<br>
+1&nbsp;-&nbsp;ch&nbsp;0-7<br>
+2&nbsp;-&nbsp;ch&nbsp;8-15<br>
+3&nbsp;-&nbsp;ch&nbsp;16&nbsp;-23<br>
+&nbsp;<br>
+Should&nbsp;be&nbsp;set&nbsp;before&nbsp;JOIN<br>
+&nbsp;<br>
+:param&nbsp;mask:&nbsp;int:&nbsp;default&nbsp;1<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setFrequencyTable"><strong>setFrequencyTable</strong></a>(self, ULDL: int, method: int, number: int, freqlist: str) -&gt; None</dt><dd><tt>optional&nbsp;and&nbsp;not&nbsp;supported&nbsp;anyway,&nbsp;according&nbsp;to&nbsp;the&nbsp;AT&nbsp;Command&nbsp;introduction&nbsp;document<br>
+&nbsp;<br>
+:param&nbsp;ULDL:&nbsp;&nbsp;&nbsp;int:&nbsp;1=UL,&nbsp;2=DL<br>
+:param&nbsp;method:&nbsp;int:&nbsp;1&nbsp;autogenerated&nbsp;according&nbsp;to&nbsp;start&nbsp;freq&nbsp;&amp;&nbsp;num&nbsp;channels<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;set&nbsp;logical&nbsp;channel&nbsp;frequency&nbsp;explicitly<br>
+:param&nbsp;number:&nbsp;int:&nbsp;number&nbsp;of&nbsp;channels&nbsp;1..16<br>
+:param&nbsp;freqlist:&nbsp;str:&nbsp;if&nbsp;method&nbsp;is&nbsp;1&nbsp;this&nbsp;is&nbsp;the&nbsp;start&nbsp;frequency&nbsp;otherwise&nbsp;a&nbsp;comma&nbsp;separated&nbsp;list&nbsp;of&nbsp;frequencies<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setJoinMode"><strong>setJoinMode</strong></a>(self, mode: int = 0) -&gt; bool</dt><dd><tt>use&nbsp;this&nbsp;command&nbsp;before&nbsp;sending&nbsp;any&nbsp;data<br>
+&nbsp;<br>
+:param&nbsp;mode:&nbsp;0=OTAA,&nbsp;1=ABP<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setKeysProtect"><strong>setKeysProtect</strong></a>(self, protect: int = 1) -&gt; bool</dt><dd><tt>protect&nbsp;current&nbsp;keys<br>
+&nbsp;<br>
+:param&nbsp;protect:&nbsp;int:&nbsp;1&nbsp;(enable)&nbsp;or&nbsp;0&nbsp;(disable)<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setLogLevel"><strong>setLogLevel</strong></a>(self, level: int) -&gt; bool</dt><dd><tt>set&nbsp;current&nbsp;log&nbsp;level.<br>
+&nbsp;<br>
+This&nbsp;library&nbsp;turns&nbsp;logging&nbsp;off&nbsp;when&nbsp;instantiated&nbsp;to<br>
+make&nbsp;it&nbsp;easier&nbsp;to&nbsp;analyse&nbsp;messages&nbsp;received&nbsp;following<br>
+AT&nbsp;commands.<br>
+&nbsp;<br>
+0&nbsp;-&nbsp;disable&nbsp;log&nbsp;information<br>
+1..5&nbsp;increasing&nbsp;verbosity<br>
+&nbsp;<br>
+:param&nbsp;level:&nbsp;int&nbsp;0..5<br>
+:return:&nbsp;nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setNbTrials"><strong>setNbTrials</strong></a>(self, Mtype: int, nbTrials: int) -&gt; bool</dt><dd><tt>This&nbsp;parameter&nbsp;affects&nbsp;how&nbsp;the&nbsp;device&nbsp;attempts&nbsp;to&nbsp;join&nbsp;by&nbsp;reducing<br>
+the&nbsp;data&nbsp;rate&nbsp;till&nbsp;a&nbsp;join&nbsp;succeeds&nbsp;(if&nbsp;it&nbsp;ever&nbsp;does).&nbsp;This&nbsp;only&nbsp;works&nbsp;if<br>
+ADR&nbsp;is&nbsp;enabled.<br>
+&nbsp;<br>
+ASR&nbsp;documentation&nbsp;places&nbsp;a&nbsp;limit&nbsp;of&nbsp;15&nbsp;on&nbsp;this&nbsp;despite&nbsp;what&nbsp;is&nbsp;said&nbsp;here:-<br>
+&nbsp;<br>
+ref:&nbsp;<a href="https://stackforce.github.io/LoRaMac-doc/LoRaMac-doc-v4.4.5/group___l_o_r_a_m_a_c.html">https://stackforce.github.io/LoRaMac-doc/LoRaMac-doc-v4.4.5/group___l_o_r_a_m_a_c.html</a><br>
+&nbsp;<br>
+NbTrials&nbsp;should&nbsp;be&nbsp;set&nbsp;prior&nbsp;to&nbsp;a&nbsp;join<br>
+&nbsp;<br>
+:param:&nbsp;MType:&nbsp;int&nbsp;0=unconfirmed,&nbsp;1=confirmed<br>
+:param&nbsp;nbtrials:&nbsp;int:&nbsp;range&nbsp;1-15<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setNwkSKey"><strong>setNwkSKey</strong></a>(self, nwkskey: str) -&gt; bool</dt><dd><tt>Should&nbsp;be&nbsp;set&nbsp;before&nbsp;sending&nbsp;a&nbsp;message<br>
+&nbsp;<br>
+:param&nbsp;nwkskey:&nbsp;32&nbsp;char&nbsp;hex&nbsp;string&nbsp;(16&nbsp;bytes)<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setPingSlotPeriod"><strong>setPingSlotPeriod</strong></a>(self, period) -&gt; bool</dt><dd><tt>only&nbsp;used&nbsp;in&nbsp;class&nbsp;B&nbsp;mode<br>
+&nbsp;<br>
+:param&nbsp;period:&nbsp;int:<br>
+:return:&nbsp;None</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setRX1Delay"><strong>setRX1Delay</strong></a>(self, delay: int = 5) -&gt; bool</dt><dd><tt>set&nbsp;the&nbsp;RX1Delay.&nbsp;By&nbsp;default&nbsp;this&nbsp;is&nbsp;5s&nbsp;with&nbsp;EU868<br>
+&nbsp;<br>
+Call&nbsp;before&nbsp;sending&nbsp;messages.<br>
+&nbsp;<br>
+:param&nbsp;delay:&nbsp;int:&nbsp;delay&nbsp;after&nbsp;tx&nbsp;to&nbsp;catch&nbsp;RX1&nbsp;window&nbsp;(normally&nbsp;5s)<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setReceiveWindowParameters"><strong>setReceiveWindowParameters</strong></a>(self, RX1DRoffset: int, RX2DataRate: int, RX2Frequency: int) -&gt; bool</dt><dd><tt>Must&nbsp;allow&nbsp;transmitter&nbsp;to&nbsp;settle&nbsp;after&nbsp;changing&nbsp;frequency<br>
+&nbsp;<br>
+:param&nbsp;RX1DRoffset:&nbsp;int:&nbsp;0..5<br>
+:param&nbsp;RX2DataRate:&nbsp;int:&nbsp;0..5<br>
+:param&nbsp;RX2Frequency:&nbsp;int:&nbsp;nnnmmmooo&nbsp;like&nbsp;868000000<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setReportMode"><strong>setReportMode</strong></a>(self, reportmode: int, interval: int) -&gt; bool</dt><dd><tt>Sets&nbsp;the&nbsp;device&nbsp;reporting&nbsp;mode&nbsp;and,&nbsp;if&nbsp;periodic,&nbsp;the&nbsp;interval&nbsp;between&nbsp;uploads.<br>
+&nbsp;<br>
+I'm&nbsp;not&nbsp;sure&nbsp;what&nbsp;this&nbsp;actually&nbsp;is&nbsp;used&nbsp;for.<br>
+&nbsp;<br>
+This&nbsp;needs&nbsp;to&nbsp;be&nbsp;issued&nbsp;before&nbsp;sending&nbsp;data.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;period<br>
+DR&nbsp;&nbsp;&nbsp;LV1&nbsp;LV2<br>
+DR0&nbsp;150&nbsp;300<br>
+DR1&nbsp;&nbsp;75&nbsp;150<br>
+DR2&nbsp;&nbsp;35&nbsp;70<br>
+DR3&nbsp;&nbsp;15&nbsp;30<br>
+DR4&nbsp;&nbsp;10&nbsp;20<br>
+DR5&nbsp;&nbsp;&nbsp;5&nbsp;10<br>
+&nbsp;<br>
+:param&nbsp;reportmode:&nbsp;int:&nbsp;0=non-periodic,&nbsp;1=periodic<br>
+:param&nbsp;interval:&nbsp;int:&nbsp;if&nbsp;periodic&nbsp;(seconds&nbsp;5..300,&nbsp;see&nbsp;table)<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setSendMessageConfirm"><strong>setSendMessageConfirm</strong></a>(self, confirm: int = 0) -&gt; bool</dt><dd><tt>Set&nbsp;the&nbsp;default&nbsp;message&nbsp;type&nbsp;as&nbsp;confirmed(1)&nbsp;or&nbsp;unconfirmed&nbsp;(0)<br>
+&nbsp;<br>
+Using&nbsp;confirmed&nbsp;messages&nbsp;will&nbsp;eat&nbsp;into&nbsp;your&nbsp;TTN&nbsp;fair&nbsp;use&nbsp;and&nbsp;legal<br>
+duty&nbsp;cycle&nbsp;limits<br>
+&nbsp;<br>
+:param&nbsp;confirm:&nbsp;int:&nbsp;1&nbsp;(confirmed)&nbsp;or&nbsp;0&nbsp;(unconfirmed)<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setTxPower"><strong>setTxPower</strong></a>(self, power: int) -&gt; bool</dt><dd><tt>Set&nbsp;the&nbsp;transmitter&nbsp;power<br>
+&nbsp;<br>
+The&nbsp;EU868&nbsp;max&nbsp;is&nbsp;16dbm&nbsp;therefore,&nbsp;with&nbsp;a&nbsp;3dbm&nbsp;antenna,&nbsp;the&nbsp;power&nbsp;should&nbsp;be&nbsp;set&nbsp;to&nbsp;13dbm<br>
+&nbsp;<br>
+0&nbsp;-&nbsp;17dBm&nbsp;factory&nbsp;setting<br>
+1&nbsp;-&nbsp;15dBm<br>
+2&nbsp;-&nbsp;13dBm<br>
+3&nbsp;-&nbsp;11dBm<br>
+4&nbsp;-&nbsp;9dBm<br>
+5&nbsp;-&nbsp;7dBm<br>
+6&nbsp;-&nbsp;5dBm<br>
+7&nbsp;-&nbsp;3dBm<br>
+&nbsp;<br>
+NOTE:&nbsp;If&nbsp;ADR&nbsp;is&nbsp;enabled&nbsp;the&nbsp;server&nbsp;may&nbsp;adjust&nbsp;this&nbsp;using&nbsp;MAC&nbsp;commands.<br>
+&nbsp;<br>
+:param&nbsp;power:&nbsp;int:&nbsp;0..7<br>
+:return:&nbsp;bool:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setULDLmode"><strong>setULDLmode</strong></a>(self, mode) -&gt; bool</dt><dd><tt>Sets&nbsp;how&nbsp;uplink/downlink&nbsp;frequencies&nbsp;are&nbsp;configured<br>
+&nbsp;<br>
+In&nbsp;EU&nbsp;the&nbsp;downlink&nbsp;freq&nbsp;is&nbsp;the&nbsp;same&nbsp;as&nbsp;the&nbsp;uplink<br>
+&nbsp;<br>
+:param&nbsp;mode:&nbsp;1:&nbsp;same&nbsp;frequency&nbsp;mode,&nbsp;2:&nbsp;different&nbsp;freq&nbsp;mode<br>
+:return:&nbsp;True/False</tt></dd></dl>
+
+<dl><dt><a name="asr6501-setWorkMode"><strong>setWorkMode</strong></a>(self, mode: int = 2) -&gt; bool</dt><dd><tt>Set&nbsp;work&nbsp;mode.&nbsp;The&nbsp;default&nbsp;is&nbsp;2&nbsp;(normal)<br>
+&nbsp;<br>
+Should&nbsp;be&nbsp;set&nbsp;before&nbsp;join.&nbsp;Spec&nbsp;does&nbsp;not&nbsp;indicate&nbsp;other<br>
+values&nbsp;that&nbsp;can&nbsp;be&nbsp;used.<br>
+&nbsp;<br>
+:param&nbsp;mode:&nbsp;int:&nbsp;default&nbsp;2<br>
+:return:&nbsp;Nothing</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>ABP</strong> = 1<br>
+<strong>DEFAULT_LOG_LEVEL</strong> = 10<br>
+<strong>OTAA</strong> = 0<br>
+<strong>hex16char</strong> = re.compile('^([0-9A-F][0-9A-F]){8}$')<br>
+<strong>hex32char</strong> = re.compile('^([0-9A-F][0-9A-F]){16}$')<br>
+<strong>hex8char</strong> = re.compile('^([0-9A-F][0-9A-F]){4}$')<br>
+<strong>kv_pat</strong> = re.compile('([0-9]+):(.*)')<br>
+<strong>reply_pat</strong> = re.compile('(.*)[:=](.*)')</td></tr></table>
+</body></html>
