@@ -78,7 +78,7 @@ It has been tested amd matches the online values I found.
 
 The M5STACK module generates a number of error messages like CME ERROR, ERR+SEND, ERR+SENT. The API handles these by raising python exceptions.
 
-CME ERROR:1 appears to mean that a syntx error was encountered with the AT command sent. I have never seen any other number with this.
+CME ERROR:1 appears to mean that a syntax error was encountered with the AT command sent. I have never seen any other number with this.
 
 In addition, there are code parameter assertions and other exceptions raised by the code to prevent sending silly numbers to the device.
 
